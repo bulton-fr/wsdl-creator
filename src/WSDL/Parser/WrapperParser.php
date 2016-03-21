@@ -35,11 +35,11 @@ use WSDL\Types\Object;
  */
 class WrapperParser
 {
-    private $_wrapperClass;
+    protected $_wrapperClass;
     /**
      * @var ComplexTypeParser[]
      */
-    private $_complexTypes;
+    protected $_complexTypes;
 
     public function __construct($wrapperClass)
     {
@@ -54,7 +54,7 @@ class WrapperParser
         }
     }
 
-    private function _makeComplexType($name, $docComment)
+    protected function _makeComplexType($name, $docComment)
     {
         if (preg_match('#@type (\w*)\[\]#', $docComment, $matches)) {
             $type = $matches[1];
@@ -86,7 +86,7 @@ class WrapperParser
         }
     }
     
-    private function _createWrapperObject($type, $name, $docComment)
+    protected function _createWrapperObject($type, $name, $docComment)
     {
         $wrapper = $this->wrapper($type, $docComment);
         $object = null;
@@ -96,7 +96,7 @@ class WrapperParser
         return new Object($type, $name, $object);
     }
 
-    private function _createArrayObject($type, $name, $docComment)
+    protected function _createArrayObject($type, $name, $docComment)
     {
         $object = null;
         if ($type == 'wrapper') {

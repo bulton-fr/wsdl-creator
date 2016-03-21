@@ -32,9 +32,9 @@ use WSDL\Parser\ComplexTypeParser;
  */
 class Arrays implements Type
 {
-    private $_type;
-    private $_name;
-    private $_complexType;
+    protected $_type;
+    protected $_name;
+    protected $_complexType;
 
     public function __construct($type, $name, $complexType)
     {

@@ -37,11 +37,11 @@ class ClassParser
     /**
      * @var ReflectionClass
      */
-    private $reflectedClass;
+    protected $reflectedClass;
     /**
      * @var MethodParser[]
      */
-    private $methodDocComments = array();
+    protected $methodDocComments = array();
 
     public function __construct($className)
     {
@@ -53,7 +53,7 @@ class ClassParser
         $this->allPublicMethodDocComment();
     }
 
-    private function allPublicMethodDocComment()
+    protected function allPublicMethodDocComment()
     {
         $reflectionClassMethods = $this->reflectedClass->getMethods();
         foreach ($reflectionClassMethods as $reflectionMethod) {
@@ -69,7 +69,7 @@ class ClassParser
      * @param ReflectionMethod $method
      * @return bool
      */
-    private function canParseMethod(ReflectionMethod $method)
+    protected function canParseMethod(ReflectionMethod $method)
     {
         return
             Strings::contains($method->getDocComment(), '@WebMethod') &&

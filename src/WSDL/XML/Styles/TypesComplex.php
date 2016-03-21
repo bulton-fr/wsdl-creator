@@ -30,10 +30,10 @@ namespace WSDL\XML\Styles;
  */
 class TypesComplex
 {
-    private $_name;
-    private $_arrayType;
-    private $_arrayTypeName;
-    private $_complex;
+    protected $_name;
+    protected $_arrayType;
+    protected $_arrayTypeName;
+    protected $_complex;
 
     public function setName($name)
     {

@@ -31,8 +31,8 @@ use Ouzo\Utilities\Strings;
  */
 class ComplexTypeParser
 {
-    private $_type;
-    private $_name;
+    protected $_type;
+    protected $_name;
 
     public function __construct($type, $name)
     {

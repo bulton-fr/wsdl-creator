@@ -30,9 +30,9 @@ namespace WSDL\XML\Styles;
  */
 class TypesElement
 {
-    private $_name;
-    private $_elementAttributes = array();
-    private $_complex = array();
+    protected $_name;
+    protected $_elementAttributes = array();
+    protected $_complex = array();
 
     public function setName($name)
     {

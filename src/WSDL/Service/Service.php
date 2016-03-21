@@ -38,12 +38,12 @@ class Service
 {
     public $template;
 
-    private $wsdl;
+    protected $wsdl;
     /**
      * @var MethodParser[]
      */
-    private $methods;
-    private $location;
+    protected $methods;
+    protected $location;
 
     public function __construct($location, $wsdl, $methods)
     {
@@ -61,7 +61,7 @@ class Service
         require_once 'service_template.phtml';
     }
 
-    private function _wrapperMethods()
+    protected function _wrapperMethods()
     {
         $methods = array();
         foreach ($this->methods as $method) {

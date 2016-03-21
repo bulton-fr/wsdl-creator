@@ -32,12 +32,12 @@ use WSDL\Parser\ComplexTypeParser;
  */
 class Object implements Type
 {
-    private $_type;
-    private $_name;
+    protected $_type;
+    protected $_name;
     /**
      * @var ComplexTypeParser[]
      */
-    private $_complexType;
+    protected $_complexType;
 
     public function __construct($type, $name, $complexType)
     {

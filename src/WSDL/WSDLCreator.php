@@ -38,21 +38,27 @@ use WSDL\XML\XMLGenerator;
  */
 class WSDLCreator
 {
-    private $_class;
-    private $_location;
+    protected $_class;
+    protected $_location;
     /**
      * @var ClassParser
      */
-    private $_classParser;
-    private $_namespace = 'http://example.com/';
+    protected $_classParser;
+    
+    /**
+     * Name, with namespace, of parser class to use.
+     * @var string $classParserName
+     */
+    protected $classParserName = '\WSDL\ClassParser';
+    protected $_namespace = 'http://example.com/';
     /**
      * @var Style
      */
-    private $_bindingStyle;
+    protected $_bindingStyle;
     /**
      * @var string
      */
-    private $_locationSuffix;
+    protected $_locationSuffix;
 
     public function __construct($class, $location, $locationSuffix = 'wsdl')
     {
@@ -63,10 +69,23 @@ class WSDLCreator
         $this->_parseClass();
     }
 
-    private function _parseClass()
+    protected function _parseClass()
     {
-        $this->_classParser = new ClassParser($this->_class);
+        $this->_classParser = new $this->$classParserName($this->_class);
         $this->_classParser->parse();
+    }
+    
+    protected function setClassParser($parserName)
+    {
+        if(!is_string($parserName))
+        {
+            throw new Exception('ParserClass redefined must be a string');
+        }
+        
+        $this->classParserName = $parserName;
+        $this->_parseClass();
+        
+        return $this;
     }
 
     public function renderWSDL()
@@ -82,8 +101,7 @@ class WSDLCreator
 
     public function setNamespace($namespace)
     {
-        $namespace = $this->_addSlashAtEndIfNotExists($namespace);
-        $this->_namespace = $namespace;
+        $this->_namespace = $this->_addSlashAtEndIfNotExists($namespace);
         return $this;
     }
 
@@ -92,7 +110,7 @@ class WSDLCreator
         return Strings::sanitizedNamespaceWithClass($this->_namespace, $this->_class);
     }
 
-    private function _addSlashAtEndIfNotExists($namespace)
+    protected function _addSlashAtEndIfNotExists($namespace)
     {
         return rtrim($namespace, '/') . '/';
     }

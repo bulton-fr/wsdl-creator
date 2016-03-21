@@ -37,19 +37,19 @@ class MethodParser
     /**
      * @var string
      */
-    private $name;
+    protected $name;
     /**
      * @var string
      */
-    private $doc;
+    protected $doc;
     /**
      * @var array
      */
-    private $rawParameters;
+    protected $rawParameters;
     /**
      * @var string
      */
-    private $rawReturn;
+    protected $rawReturn;
 
     public function __construct($name, $doc)
     {

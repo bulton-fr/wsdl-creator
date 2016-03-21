@@ -30,8 +30,8 @@ namespace WSDL\Types;
  */
 class Simple implements Type
 {
-    private $_type;
-    private $_name;
+    protected $_type;
+    protected $_name;
 
     public function __construct($type, $name)
     {

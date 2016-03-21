@@ -37,7 +37,7 @@ use WSDL\Parser\MethodParser;
  */
 class DocumentLiteralWrapper
 {
-    private $_obj = null;
+    protected $_obj = null;
 
     public function __construct($obj)
     {
@@ -68,7 +68,7 @@ class DocumentLiteralWrapper
         }
     }
 
-    private function _parseArgs($args, $parameters)
+    protected function _parseArgs($args, $parameters)
     {
         $args = Arrays::getValue($args, 0, new stdClass());
         $newArgs = array();

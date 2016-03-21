@@ -35,11 +35,11 @@ use WSDL\Types\Simple;
  */
 class ParameterParser
 {
-    private $_strategy;
-    private $_parameter;
-    private $_type;
-    private $_name;
-    private $_methodName;
+    protected $_strategy;
+    protected $_parameter;
+    protected $_type;
+    protected $_name;
+    protected $_methodName;
 
     public function __construct($parameter, $methodName = '')
     {
@@ -52,7 +52,7 @@ class ParameterParser
         return $this->_detectType();
     }
 
-    private function _detectType()
+    protected function _detectType()
     {
         $this->_parseAndSetType();
         $this->_parseAndSetName();
@@ -69,7 +69,7 @@ class ParameterParser
         }
     }
 
-    private function _parseAndSetType()
+    protected function _parseAndSetType()
     {
         if (preg_match('#^(\w*)\[\]#', $this->_parameter, $type)) {
             $this->_type = $type[1];
@@ -86,13 +86,13 @@ class ParameterParser
         }
     }
 
-    private function _parseAndSetName()
+    protected function _parseAndSetName()
     {
         preg_match('#\\$(\w+)#', $this->_parameter, $name);
         $this->_name = OuzoArrays::getValue($name, 1, '');
     }
 
-    private function _createWrapperObject()
+    protected function _createWrapperObject()
     {
         $wrapper = $this->wrapper();
         $object = null;
@@ -102,7 +102,7 @@ class ParameterParser
         return new Object($this->getType(), $this->getName(), $object);
     }
 
-    private function _createArrayObject()
+    protected function _createArrayObject()
     {
         $object = null;
         if ($this->_type == 'wrapper') {

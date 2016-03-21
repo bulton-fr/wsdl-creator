@@ -54,7 +54,7 @@ class DocumentLiteralWrapped extends Style
         return $this->_createPart($method, 'Response');
     }
 
-    private function _createPart(MethodParser $method, $type = '')
+    protected function _createPart(MethodParser $method, $type = '')
     {
         $name = 'parameters';
         $elementName = 'ns:' . $method->getName() . $type;
@@ -84,7 +84,7 @@ class DocumentLiteralWrapped extends Style
         return $element;
     }
 
-    private function _generateElements(Type $parameter, TypesElement $element)
+    protected function _generateElements(Type $parameter, TypesElement $element)
     {
         list($type, $value) = $this->_prepareTypeAndValue($parameter);
         $element->setElementAttributes($type, $value, $parameter->getName());

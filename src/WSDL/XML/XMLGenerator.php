@@ -40,30 +40,30 @@ use WSDL\XML\Styles\TypesElement;
  */
 class XMLGenerator
 {
-    private $_name;
-    private $_location;
-    private $_targetNamespace;
-    private $_targetNamespaceTypes;
+    protected $_name;
+    protected $_location;
+    protected $_targetNamespace;
+    protected $_targetNamespaceTypes;
     /**
      * @var DOMDocument
      */
-    private $_DOMDocument;
+    protected $_DOMDocument;
     /**
      * @var DOMDocument
      */
-    private $_definitionsRootNode;
+    protected $_definitionsRootNode;
     /**
      * @var DOMDocument
      */
-    private $_generatedXML;
+    protected $_generatedXML;
     /**
      * @var MethodParser[]
      */
-    private $_WSDLMethods;
+    protected $_WSDLMethods;
     /**
      * @var Style
      */
-    private $_bindingStyle;
+    protected $_bindingStyle;
 
     public static $alreadyGeneratedComplexTypes = array();
 
@@ -113,7 +113,7 @@ class XMLGenerator
     /**
      * @return XMLGenerator
      */
-    private function _definitions()
+    protected function _definitions()
     {
         $definitionsElement = $this->createElementWithAttributes('definitions', array(
             'name' => $this->_name,
@@ -134,7 +134,7 @@ class XMLGenerator
     /**
      * @return XMLGenerator
      */
-    private function _types()
+    protected function _types()
     {
         $typesElement = $this->_createElement('types');
 
@@ -159,14 +159,14 @@ class XMLGenerator
         return $this;
     }
 
-    private function _typesParameters($parameters, $schemaElement)
+    protected function _typesParameters($parameters, $schemaElement)
     {
         foreach ($parameters as $parameter) {
             $this->_generateComplexType($parameter, $schemaElement);
         }
     }
 
-    private function _generateComplexType($parameter, $schemaElement)
+    protected function _generateComplexType($parameter, $schemaElement)
     {
         if ($parameter instanceof TypesComplex) {
             if (!$this->_bindingStyle instanceof DocumentLiteralWrapped) {
@@ -180,7 +180,7 @@ class XMLGenerator
         }
     }
 
-    private function _generateObject(TypesElement $parameter, $schemaElement)
+    protected function _generateObject(TypesElement $parameter, $schemaElement)
     {
         $name = $parameter->getName();
 
@@ -220,7 +220,7 @@ class XMLGenerator
         $schemaElement->appendChild($element);
     }
 
-    private function _generateArray(TypesComplex $parameter, $schemaElement)
+    protected function _generateArray(TypesComplex $parameter, $schemaElement)
     {
         $name = $parameter->getName();
         $type = $parameter->getArrayType();
@@ -246,7 +246,7 @@ class XMLGenerator
         }
     }
 
-    private function _generateTypedArray(TypesComplex $parameter, $schemaElement)
+    protected function _generateTypedArray(TypesComplex $parameter, $schemaElement)
     {
         $name = $parameter->getName();
         $type = $parameter->getArrayType();
@@ -287,7 +287,7 @@ class XMLGenerator
     /**
      * @return XMLGenerator
      */
-    private function _message()
+    protected function _message()
     {
         foreach ($this->_WSDLMethods as $method) {
             $messageInputElement = $this->_messageInput($method);
@@ -299,7 +299,7 @@ class XMLGenerator
         return $this;
     }
 
-    private function _messageInput(MethodParser $method)
+    protected function _messageInput(MethodParser $method)
     {
         $messageInputElement = $this->createElementWithAttributes('message', array(
             'name' => $method->getName() . 'Request'
@@ -315,7 +315,7 @@ class XMLGenerator
         return $messageInputElement;
     }
 
-    private function _messageOutput(MethodParser $method)
+    protected function _messageOutput(MethodParser $method)
     {
         $messageOutputElement = $this->createElementWithAttributes('message', array(
             'name' => $method->getName() . 'Response'
@@ -329,7 +329,7 @@ class XMLGenerator
     /**
      * @return XMLGenerator
      */
-    private function _portType()
+    protected function _portType()
     {
         $portTypeElement = $this->createElementWithAttributes('portType', array(
             'name' => $this->_name . 'PortType'
@@ -359,7 +359,7 @@ class XMLGenerator
     /**
      * @return XMLGenerator
      */
-    private function _binding()
+    protected function _binding()
     {
         $bindingElement = $this->createElementWithAttributes('binding', array(
             'name' => $this->_name . 'Binding',
@@ -410,7 +410,7 @@ class XMLGenerator
     /**
      * @return XMLGenerator
      */
-    private function _service()
+    protected function _service()
     {
         $serviceElement = $this->createElementWithAttributes('service', array('name' => $this->_name . 'Service'));
 
@@ -427,12 +427,12 @@ class XMLGenerator
         $this->_saveXML();
     }
 
-    private function _createElement($elementName, $value = '')
+    protected function _createElement($elementName, $value = '')
     {
         return $this->_DOMDocument->createElement($elementName, $value);
     }
 
-    private function _createAttributeWithValue($attributeName, $value)
+    protected function _createAttributeWithValue($attributeName, $value)
     {
         $attribute = $this->_DOMDocument->createAttribute($attributeName);
         $attribute->value = $value;
@@ -449,7 +449,7 @@ class XMLGenerator
         return $element;
     }
 
-    private function _saveXML()
+    protected function _saveXML()
     {
         $this->_generatedXML = $this->_DOMDocument->saveXML();
     }

@@ -26,7 +26,6 @@ namespace WSDL\XML\Styles;
 use Ouzo\Utilities\Inflector;
 use WSDL\Parser\MethodParser;
 use WSDL\Types\Type;
-use WSDL\Utilities\Strings;
 use WSDL\Utilities\TypeHelper;
 
 /**
