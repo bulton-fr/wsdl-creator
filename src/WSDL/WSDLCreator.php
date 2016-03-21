@@ -49,7 +49,7 @@ class WSDLCreator
      * Name, with namespace, of parser class to use.
      * @var string $classParserName
      */
-    protected $classParserName = '\WSDL\ClassParser';
+    protected $classParserName = '\WSDL\Parser\ClassParser';
     protected $_namespace = 'http://example.com/';
     /**
      * @var Style
