@@ -75,7 +75,7 @@ class WSDLCreator
         $this->_classParser->parse();
     }
     
-    protected function setClassParser($parserName)
+    public function setClassParser($parserName)
     {
         if(!is_string($parserName))
         {
