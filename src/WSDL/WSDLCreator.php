@@ -140,6 +140,14 @@ class WSDLCreator
 
     public function getWsdlLocation()
     {
-        return $this->_location . '?' . $this->_locationSuffix;
+        $uriQuery  = parse_url($this->_location, PHP_URL_QUERY);
+        $separator = '?';
+        
+        if($uriQuery !== '')
+        {
+            $separator = '&';
+        }
+        
+        return $this->_location . $separator . $this->_locationSuffix;
     }
 }
