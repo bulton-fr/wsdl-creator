@@ -71,7 +71,7 @@ class WSDLCreator
 
     protected function _parseClass()
     {
-        $this->_classParser = new $this->$classParserName($this->_class);
+        $this->_classParser = new $this->classParserName($this->_class);
         $this->_classParser->parse();
     }
     
