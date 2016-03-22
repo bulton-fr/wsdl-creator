@@ -141,9 +141,10 @@ class ParameterParser
         }
         preg_match('#@className=(.*?)(?:\s|$)#', $this->_parameter, $matches);
         $className = $matches[1];
-        $this->_type = str_replace('\\', '', $className);
+        //$this->_type = str_replace('\\', '', $className);
         $wrapperParser = new WrapperParser($className);
         $wrapperParser->parse();
+		$this->_type = $wrapperParser->getTypeName();
         return $wrapperParser;
     }
 

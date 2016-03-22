@@ -36,6 +36,7 @@ use WSDL\Types\Object;
 class WrapperParser
 {
     protected $_wrapperClass;
+	protected $typeName;
     /**
      * @var ComplexTypeParser[]
      */
@@ -44,7 +45,28 @@ class WrapperParser
     public function __construct($wrapperClass)
     {
         $this->_wrapperClass = new ReflectionClass($wrapperClass);
+		$this->detectTypeName($wrapperClass);
     }
+	
+	protected function detectTypeName($className)
+	{
+		$docComment = $this->_wrapperClass->getDocComment();
+		$matches    = [];
+		
+		preg_match('#@typeName (\w+)#', $docComment, $matches);
+		if(isset($matches[1]))
+		{
+			$this->typeName = $matches[1];
+			return;
+		}
+		
+		$this->typeName = str_replace('\\', '', $className);
+	}
+	
+	public function getTypeName()
+	{
+		return $this->typeName;
+	}
 
     public function parse()
     {
@@ -121,9 +143,10 @@ class WrapperParser
         }
         preg_match('#@className=(.*?)(?:\s|$)#', $docComment, $matches);
         $className = $matches[1];
-        $type = str_replace('\\', '', $className);
+        //$type = str_replace('\\', '', $className);
         $wrapperParser = new WrapperParser($className);
         $wrapperParser->parse();
+		$type = $wrapperParser->getTypeName();
         return $wrapperParser;
     }
 
