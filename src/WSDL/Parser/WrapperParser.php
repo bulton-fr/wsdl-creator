@@ -24,6 +24,7 @@
 namespace WSDL\Parser;
 
 use ReflectionClass;
+use ReflectionMethod;
 use ReflectionProperty;
 use WSDL\Types\Arrays;
 use WSDL\Types\Object;
@@ -37,6 +38,8 @@ class WrapperParser
 {
     protected $_wrapperClass;
 	protected $typeName;
+    protected $dynamicProperties;
+    protected $className;
     /**
      * @var ComplexTypeParser[]
      */
@@ -44,11 +47,13 @@ class WrapperParser
 
     public function __construct($wrapperClass)
     {
+        $this->className = $wrapperClass;
+        
         $this->_wrapperClass = new ReflectionClass($wrapperClass);
-		$this->detectTypeName($wrapperClass);
+		$this->detectTypeName();
     }
 	
-	protected function detectTypeName($className)
+	protected function detectTypeName()
 	{
 		$docComment = $this->_wrapperClass->getDocComment();
 		$matches    = [];
@@ -60,8 +65,33 @@ class WrapperParser
 			return;
 		}
 		
-		$this->typeName = str_replace('\\', '', $className);
+		$this->typeName = str_replace('\\', '', $this->className);
 	}
+    
+    protected function dynamicProperties()
+    {
+        $staticMethods = $this->_wrapperClass->getMethods(ReflectionMethod::IS_STATIC);
+        
+        if($staticMethods === array())
+        {
+            return array();
+        }
+        
+        $className = $this->className;
+        foreach($staticMethods as $method)
+        {
+            $methodName = $method->name;
+            
+            if($methodName !== 'dynamicProperties')
+            {
+                continue;
+            }
+            
+            return $className::dynamicProperties();
+        }
+        
+        return array();
+    }
 	
 	public function getTypeName()
 	{
@@ -73,6 +103,12 @@ class WrapperParser
         $publicFields = $this->_wrapperClass->getProperties(ReflectionProperty::IS_PUBLIC);
         foreach ($publicFields as $field) {
             $this->_makeComplexType($field->getName(), $field->getDocComment());
+        }
+        
+        $dynamicFields = $this->dynamicProperties();
+        foreach($dynamicFields as $field)
+        {
+            $this->_makeComplexType($field['name'], $field['type']);
         }
     }
 
