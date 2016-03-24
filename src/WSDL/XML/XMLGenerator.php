@@ -222,6 +222,9 @@ class XMLGenerator
 
     protected function _generateArray(TypesComplex $parameter, $schemaElement)
     {
+        //http://www.ws-i.org/Profiles/BasicProfile-1.1.html#soapenc_Array
+        return $this->_generateTypedArray($parameter, $schemaElement);
+        
         $name = $parameter->getName();
         $type = $parameter->getArrayType();
 
