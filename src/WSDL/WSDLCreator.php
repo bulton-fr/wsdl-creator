@@ -90,7 +90,7 @@ class WSDLCreator
 
     public function renderWSDL()
     {
-        header("Content-Type: text/xml");
+        header('Content-Type: text/xml');
         $xml = new XMLGenerator($this->_class, $this->_namespace, $this->_location);
         $xml
             ->setWSDLMethods($this->_classParser->getMethods())
@@ -149,5 +149,26 @@ class WSDLCreator
         }
         
         return $this->_location . $separator . $this->_locationSuffix;
+    }
+    
+    public function getParametersForMethod($wsdlMethod)
+    {
+        $methodInfos = null;
+        
+        foreach($this->_classParser->getMethods() as $method)
+        {
+            if($method->getName() === $wsdlMethod)
+            {
+                $methodInfos = $method;
+                break;
+            }
+        }
+        
+        if($methodInfos === null)
+        {
+            throw new \Exception('Method not found');
+        }
+        
+        return $methodInfos->returning();
     }
 }
