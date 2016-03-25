@@ -76,7 +76,7 @@ abstract class Style
 
     protected function _getObjectName(Type $parameter)
     {
-        return $parameter->getType() == 'object' ? ucfirst($parameter->getName()) : $parameter->getType();
+        return $parameter->getType() == 'object' ? $parameter->getName() : $parameter->getType();
     }
 
     protected function _generateType($parameter)
