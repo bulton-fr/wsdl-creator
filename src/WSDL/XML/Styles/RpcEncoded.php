@@ -53,8 +53,20 @@ class RpcEncoded extends Style
 
     public function methodOutput(MethodParser $method)
     {
-        $returnElement = $this->_createElement($method->returning());
-        return $returnElement;
+        $outputs = $method->returning();
+        
+        if(!is_array($outputs))
+        {
+            return $this->_createElement($outputs);
+        }
+        
+        $returnElements = array();
+        foreach($outputs as $output)
+        {
+            $returnElements[] = $this->_createElement($output);
+        }
+        
+        return $returnElements;
     }
 
     public function typeParameters(MethodParser $method)
@@ -68,6 +80,18 @@ class RpcEncoded extends Style
 
     public function typeReturning(MethodParser $method)
     {
-        return $this->_generateType($method->returning());
+        $returning = $method->returning();
+        if(!is_array($returning))
+        {
+            return $this->_generateType($returning);
+        }
+        
+        $elements = array();
+        foreach ($returning as $return)
+        {
+            $elements[] = $this->_generateType($return);
+        }
+        
+        return $elements;
     }
 }

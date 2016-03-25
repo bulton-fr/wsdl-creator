@@ -324,8 +324,23 @@ class XMLGenerator
             'name' => $method->getName() . 'Response'
         ));
         $partsOutput = $this->_bindingStyle->methodOutput($method);
-        $partsOutput = $this->createElementWithAttributes('part', $partsOutput);
-        $messageOutputElement->appendChild($partsOutput);
+        
+        if(isset($partsOutput['name']))
+        {
+            $partsOutput = $this->createElementWithAttributes('part', $partsOutput);
+            $messageOutputElement->appendChild($partsOutput);
+        }
+        else
+        {
+            $obj = $this;
+            $partsOutput = array_map(function ($attributes) use ($obj) {
+                return $obj->createElementWithAttributes('part', $attributes);
+            }, $partsOutput);
+            foreach ($partsOutput as $part) {
+                $messageOutputElement->appendChild($part);
+            }
+        }
+        
         return $messageOutputElement;
     }
 

@@ -64,6 +64,17 @@ class ParameterParser
                 return $this->_createWrapperObject();
             case 'array':
                 return $this->_createArrayObject();
+            case 'list':
+                //use by return
+                $obj = new Object($this->getType(), $this->getName(), $this->complexTypes());
+                
+                $this->_parameter = array();
+                foreach($obj->getComplexType() as $types)
+                {
+                    $this->_parameter[] = $types->getType().' $'.$types->getName();
+                }
+                
+                return ParameterParser::create($this->_parameter, $this->_methodName);
             default:
                 return new Simple($this->getType(), $this->getName());
         }
@@ -150,7 +161,7 @@ class ParameterParser
 
     public function isComplex()
     {
-        return in_array($this->getType(), array('object', 'wrapper'));
+        return in_array($this->getType(), array('object', 'wrapper', 'list'));
     }
 
     /**
